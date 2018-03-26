@@ -18,18 +18,30 @@ public class Player_motion : MonoBehaviour {
         left = Input.GetKey (KeyCode.A);
         right = Input.GetKey (KeyCode.D);
 		angle_to_rotete=0;
-		calculate_angle ();
 		
 
-		if (Input.GetAxis ("Jump")>0.0f)
-		{
-			anim.SetBool ("jumping",true);
-			//anim.SetBool ("endjumping",false);
-		}
-        anim.SetFloat ("movement",Mathf.Max( Mathf.Abs(Input.GetAxis ("Vertical")),  Mathf.Abs(Input.GetAxis ("Horizontal"))  ));
-        if (anim.GetCurrentAnimatorStateInfo (0).IsTag ("walking"))
-            transform.eulerAngles += new Vector3 (0, Mathf.DeltaAngle (transform.eulerAngles.y, center_point.eulerAngles.y+angle_to_rotete) * Time.deltaTime * rotation_speed, 0);
 		
+        anim.SetFloat ("movement",Mathf.Max( Mathf.Abs(Input.GetAxis ("Vertical")),  Mathf.Abs(Input.GetAxis ("Horizontal"))  ));
+        if (anim.GetCurrentAnimatorStateInfo (0).IsTag ("walkingWeap"))
+        {
+            transform.eulerAngles += new Vector3 (0, Mathf.DeltaAngle (transform.eulerAngles.y, center_point.eulerAngles.y+angle_to_rotete) * Time.deltaTime * rotation_speed, 0);
+            anim.SetFloat ("y",Input.GetAxis ("Vertical"));
+            anim.SetFloat ("x",Input.GetAxis ("Horizontal"));
+        }
+        else
+        {
+        
+            if (Input.GetAxis ("Jump")>0.0f)
+            {
+                anim.SetBool ("jumping",true);
+            }
+            anim.SetFloat ("movement",Mathf.Max( Mathf.Abs(Input.GetAxis ("Vertical")),  Mathf.Abs(Input.GetAxis ("Horizontal"))  ));
+            if (anim.GetCurrentAnimatorStateInfo (0).IsTag ("walking"))
+            {
+                calculate_angle ();
+                transform.eulerAngles += new Vector3 (0, Mathf.DeltaAngle (transform.eulerAngles.y, center_point.eulerAngles.y+angle_to_rotete) * Time.deltaTime * rotation_speed, 0);
+            }
+        }
 		
     }
 	void calculate_angle () {
