@@ -9,8 +9,8 @@ public class MovingPlatform : MonoBehaviour {
     public Transform position2;
     public Vector3 newPosition;
     public string currentState;
-    public float smooth;
-    public float resetTime;
+    public float smooth=1f;
+    public float resetTime=1f;
     // Use this for initialization
     void Start () {
         ChangeTarget();
