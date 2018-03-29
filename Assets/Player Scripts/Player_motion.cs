@@ -35,12 +35,18 @@ public class Player_motion : MonoBehaviour {
 		angle_to_rotete=0;
         float jT=Mathf.Abs(anim.GetFloat("JumpingTiming")-0.60f);
         Vector3 vector;
+         RaycastHit hit;
+
+        if (Physics.Raycast(transform.position, -Vector3.up, out hit, 100.0f))
+            Debug.Log("Found an object - distance: " + hit.distance);
+        //bool pla=Physics.Raycast(transform.position, -Vector3.up, distToGround, 0.1);
 		
         if (anim.GetCurrentAnimatorStateInfo (0).IsTag ("jumpTag") && !anim.GetBool("inTheMiddleOfJumping"))
         {
            /* kat=transform.eulerAngles.y;
             kat*=2.0f*3.14f/360.0f;*/
-            Debug.Log("down"+jT*jumpforce);
+
+            //Debug.Log("down"+jT*jumpforce);
             vector=new Vector3(0,jT*jumpforce,0);
             transform.position -=vector;
              vector=new Vector3(0.1f*Mathf.Sin(kat),0,0.1f*Mathf.Cos(kat));
@@ -53,13 +59,12 @@ public class Player_motion : MonoBehaviour {
         {
            /* kat=transform.eulerAngles.y;
             kat*=2.0f*3.14f/360.0f;*/
-            Debug.Log("up"+jT*jumpforce);
+
+            //Debug.Log("up"+jT*jumpforce);
             vector=new Vector3(0,jT*jumpforce,0);
             transform.position +=vector;
             vector=new Vector3(0.1f*Mathf.Sin(kat),0,0.1f*Mathf.Cos(kat));
             transform.position +=vector;
-        //     transform.position=center_point.position;
-        //    Player_cam.LookAt (center_point);
             
         }
 		
@@ -72,9 +77,6 @@ public class Player_motion : MonoBehaviour {
         }
         else
         {
-          //  Debug.Log(controller.isGrounded);
-           // Debug.Log(verticalVelocity);
-           // if (controller.isGrounded)
             {
                 //verticalVelocity=-gravity*Time.deltaTime;
                 if (Input.GetAxis ("Jump")>0.0f)
@@ -83,39 +85,11 @@ public class Player_motion : MonoBehaviour {
                     anim.SetBool ("jumping",true);
                     kat=transform.eulerAngles.y-10;
                     kat*=2.0f*3.14f/360.0f;
-                    /*Debug.Log(transform.eulerAngles.y);
-                    Debug.Log(Mathf.Sin(kat));
-                    Debug.Log(Mathf.Cos(kat));
-*/
-
-                    /*vector=new Vector3(1.0f*Mathf.Sin(kat),0,1.0f*Mathf.Cos(kat));
-                   transform.position +=vector;*/
-
-
-                  //  verticalVelocity=jumpforce;
+              
                     
                 }
             }
-          //  else
-            {
-          //      verticalVelocity=-gravity*Time.deltaTime;
-            }
-            // if (JUMPING==false)
-            // {
-            //     verticalVelocity=-gravity*Time.deltaTime;
-               
-            //     JUMPING=true;
-            //     verticalVelocity=jumpforce;
-              
-               
-            // }
-            // else
-            // {
-            //         verticalVelocity=-gravity*Time.deltaTime;
-            // }
-//            Vector3 vector=new Vector3(0,verticalVelocity,0);
-            //controller.Move(vector*Time.deltaTime);
-           //  transform.position +=vector;
+       
 
             anim.SetFloat ("movement",Mathf.Max( Mathf.Abs(Input.GetAxis ("Vertical")),  Mathf.Abs(Input.GetAxis ("Horizontal"))  ));
             if (anim.GetCurrentAnimatorStateInfo (0).IsTag ("walking"))
