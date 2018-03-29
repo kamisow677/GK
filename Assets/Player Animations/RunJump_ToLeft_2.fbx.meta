@@ -192,10 +192,10 @@ ModelImporter:
     - serializedVersion: 16
       name: RunJump_ToLeft_2
       takeName: _28_B_a_U1_M_P_RunJump_ToLeft_R_Fb_p0_No_0_2
-      firstFrame: 258
-      lastFrame: 341
+      firstFrame: 271
+      lastFrame: 311
       wrapMode: 0
-      orientationOffsetY: -45.26
+      orientationOffsetY: -75.3
       level: 0
       cycleOffset: 0
       loop: 0
@@ -216,7 +216,7 @@ ModelImporter:
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
+      additiveReferencePoseFrame: 256
     isReadable: 1
   meshes:
     lODScreenPercentages: []

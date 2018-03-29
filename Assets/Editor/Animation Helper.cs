@@ -62,6 +62,8 @@ public class AnimationHelper : EditorWindow
 		controller.AddParameter("endHidingWeapon", AnimatorControllerParameterType.Bool);
 		controller.AddParameter("x", AnimatorControllerParameterType.Float);
 		controller.AddParameter("y", AnimatorControllerParameterType.Float);
+		controller.AddParameter("inTheMiddleOfJumping", AnimatorControllerParameterType.Bool);
+		controller.AddParameter("JumpingTiming", AnimatorControllerParameterType.Float);
 		
 		//Add states
 		AnimatorState idleState = controller.layers[0].stateMachine.AddState("Idle");
@@ -69,6 +71,7 @@ public class AnimationHelper : EditorWindow
 		idleState.tag="idle";
 		AnimatorState jumpInRunState = controller.layers[0].stateMachine.AddState("Jump In Run");
 		jumpInRunState.motion = jumpInRunAnim; 
+		jumpInRunState.tag="jumpTag";
 
 		AnimatorState idleWeapState = controller.layers[0].stateMachine.AddState("Idle Weapon");
 		idleWeapState.motion = idleWeapAnim; 

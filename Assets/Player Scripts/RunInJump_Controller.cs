@@ -3,21 +3,30 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class RunInJump_Controller : StateMachineBehaviour {
+	
+	public Transform Player_cam;
 
 	 // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
 	override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
 		
+		animator.SetBool ("inTheMiddleOfJumping", true);
 	}
 
 	// OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
 	override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
 		
-		Debug.Log(stateInfo.normalizedTime);
-		if (stateInfo.normalizedTime>0.99)
-			{
-				animator.SetBool ("endjumping", true);
-				animator.SetBool ("jumping", false);
-			}
+		
+		//Debug.Log(stateInfo.normalizedTime);
+		if (stateInfo.normalizedTime>0.60)
+			animator.SetBool ("inTheMiddleOfJumping", false);
+		if (stateInfo.normalizedTime>0.98)
+		{
+			animator.SetBool ("endjumping", true);
+			animator.SetBool ("jumping", false);
+			animator.SetBool ("inTheMiddleOfJumping", false);
+			
+		}
+		animator.SetFloat("JumpingTiming",stateInfo.normalizedTime);
 		
 	}
 
