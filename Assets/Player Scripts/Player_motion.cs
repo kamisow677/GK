@@ -17,7 +17,8 @@ public class Player_motion : MonoBehaviour {
 	int angle_to_rotete;
 
     private float gravity=5*14.0f;
-    private float jumpforce=0.3f;
+    private float jumpforce=0.6f;
+    private float jumpdist=0.13f;
     private float verticalVelocity=0;
     private float distToGround;
     void Awake () {
@@ -37,7 +38,7 @@ public class Player_motion : MonoBehaviour {
         Vector3 vector;
          RaycastHit hit;
 
-        if (Physics.Raycast(transform.position, -Vector3.up, out hit, 0.4f))
+        if (Physics.Raycast(transform.position, -Vector3.up, out hit, 0.5f))
         {
             Debug.Log("FFALSE " + hit.distance);
             anim.SetBool ("inAir",false);
@@ -57,7 +58,7 @@ public class Player_motion : MonoBehaviour {
             //Debug.Log("down"+jT*jumpforce);
             vector=new Vector3(0,jT*jumpforce,0);
             transform.position -=vector;
-             vector=new Vector3(0.05f*Mathf.Sin(kat),0,0.05f*Mathf.Cos(kat));
+             vector=new Vector3(jumpdist*Mathf.Sin(kat),0,jumpdist*Mathf.Cos(kat));
             transform.position +=vector;
             
             // transform.position=center_point.position;
@@ -71,7 +72,7 @@ public class Player_motion : MonoBehaviour {
             //Debug.Log("up"+jT*jumpforce);
             vector=new Vector3(0,jT*jumpforce,0);
             transform.position +=vector;
-            vector=new Vector3(0.05f*Mathf.Sin(kat),0,0.05f*Mathf.Cos(kat));
+            vector=new Vector3(jumpdist*Mathf.Sin(kat),0,jumpdist*Mathf.Cos(kat));
             transform.position +=vector;
             
         }
@@ -138,7 +139,7 @@ public class Player_motion : MonoBehaviour {
     private bool isInAir()
     {
         RaycastHit hit;
-        return Physics.Raycast(transform.position, -Vector3.up, out hit, 0.2f)? false:true;
+        return Physics.Raycast(transform.position, -Vector3.up, out hit, 0.3f)? false:true;
         
     }
     
