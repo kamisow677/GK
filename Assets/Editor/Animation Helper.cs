@@ -18,6 +18,8 @@ public class AnimationHelper : EditorWindow
 	 public AnimationClip walkRightWeapAnim; 
 	 public AnimationClip walkLeftWeapAnim; 
 
+	  public AnimationClip inAirAnim;
+
 	 [MenuItem ("Window/Animator Helper")] 
 	 static void OpenWindow () 
 	 { //Get existing open window or if none, make a new one: 
@@ -38,6 +40,8 @@ public class AnimationHelper : EditorWindow
 		walkBackwardWeapAnim = EditorGUILayout.ObjectField("walkBackwardWeapAnim", walkBackwardWeapAnim, typeof(AnimationClip), false) as AnimationClip; 
 		walkRightWeapAnim = EditorGUILayout.ObjectField("walkRightWeapAnim", walkRightWeapAnim, typeof(AnimationClip), false) as AnimationClip; 
 		walkLeftWeapAnim = EditorGUILayout.ObjectField("walkLeftWeapAnim", walkLeftWeapAnim, typeof(AnimationClip), false) as AnimationClip; 
+
+		inAirAnim = EditorGUILayout.ObjectField("inAirAnim", inAirAnim, typeof(AnimationClip), false) as AnimationClip; 
 		
 		if (GUILayout.Button("Create")) 
 		{ 
@@ -64,6 +68,7 @@ public class AnimationHelper : EditorWindow
 		controller.AddParameter("y", AnimatorControllerParameterType.Float);
 		controller.AddParameter("inTheMiddleOfJumping", AnimatorControllerParameterType.Bool);
 		controller.AddParameter("JumpingTiming", AnimatorControllerParameterType.Float);
+		controller.AddParameter("inAir", AnimatorControllerParameterType.Bool);
 		
 		//Add states
 		AnimatorState idleState = controller.layers[0].stateMachine.AddState("Idle");
@@ -80,6 +85,9 @@ public class AnimationHelper : EditorWindow
 		equipWeapState.motion = equipWeapAnim; 
 		AnimatorState hideWeapState = controller.layers[0].stateMachine.AddState("Hiding Weapon");
 		hideWeapState.motion = hideWeapAnim; 
+
+		AnimatorState inAirState = controller.layers[0].stateMachine.AddState("in Air");
+		inAirState.motion = inAirAnim; 
 
 
 		//Blend tree creation WALK-RUN
@@ -143,7 +151,25 @@ public class AnimationHelper : EditorWindow
 		LeaveIdleWeapState.AddCondition(AnimatorConditionMode.Greater, 0.01f, "movement"); 
 		leaveMoveWeaponState.AddCondition(AnimatorConditionMode.Less, 0.01f, "movement"); 
 
+		//Transitions
+		//Transition moveState-inAirState-moveState
+		AnimatorStateTransition LeaveMoveState = moveState.AddTransition(inAirState); 
+		AnimatorStateTransition leaveInAirState = inAirState.AddTransition(moveState); 
+		LeaveMoveState.AddCondition(AnimatorConditionMode.If,1,"inAir"); 
+		leaveInAirState.AddCondition(AnimatorConditionMode.IfNot,1,"inAir"); 
+
+		//Transitions
+		//Transition idleState-inAirState-idleState
+		AnimatorStateTransition LeaveIdleState = idleState.AddTransition(inAirState); 
+		AnimatorStateTransition leaveInAirState2 = inAirState.AddTransition(idleState); 
+		LeaveIdleState.AddCondition(AnimatorConditionMode.If,1,"inAir"); 
+		leaveInAirState2.AddCondition(AnimatorConditionMode.IfNot,1,"inAir"); 
+
 		target.GetComponent<Animator>().runtimeAnimatorController = controller;
+
+
+
+
 	}
 } 
 #endif
