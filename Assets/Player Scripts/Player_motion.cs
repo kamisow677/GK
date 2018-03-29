@@ -17,7 +17,7 @@ public class Player_motion : MonoBehaviour {
 	int angle_to_rotete;
 
     private float gravity=5*14.0f;
-    private float jumpforce=0.6f;
+    private float jumpforce=0.3f;
     private float verticalVelocity=0;
     private float distToGround;
     void Awake () {
@@ -37,8 +37,16 @@ public class Player_motion : MonoBehaviour {
         Vector3 vector;
          RaycastHit hit;
 
-        if (Physics.Raycast(transform.position, -Vector3.up, out hit, 100.0f))
-            Debug.Log("Found an object - distance: " + hit.distance);
+        if (Physics.Raycast(transform.position, -Vector3.up, out hit, 0.4f))
+        {
+            Debug.Log("FFALSE " + hit.distance);
+            anim.SetBool ("inAir",false);
+        }
+        else
+        {
+            Debug.Log("TRUE " + hit.distance);
+            anim.SetBool ("inAir",true);
+        }
         //bool pla=Physics.Raycast(transform.position, -Vector3.up, distToGround, 0.1);
 		
         if (anim.GetCurrentAnimatorStateInfo (0).IsTag ("jumpTag") && !anim.GetBool("inTheMiddleOfJumping"))
@@ -49,7 +57,7 @@ public class Player_motion : MonoBehaviour {
             //Debug.Log("down"+jT*jumpforce);
             vector=new Vector3(0,jT*jumpforce,0);
             transform.position -=vector;
-             vector=new Vector3(0.1f*Mathf.Sin(kat),0,0.1f*Mathf.Cos(kat));
+             vector=new Vector3(0.05f*Mathf.Sin(kat),0,0.05f*Mathf.Cos(kat));
             transform.position +=vector;
             
             // transform.position=center_point.position;
@@ -63,7 +71,7 @@ public class Player_motion : MonoBehaviour {
             //Debug.Log("up"+jT*jumpforce);
             vector=new Vector3(0,jT*jumpforce,0);
             transform.position +=vector;
-            vector=new Vector3(0.1f*Mathf.Sin(kat),0,0.1f*Mathf.Cos(kat));
+            vector=new Vector3(0.05f*Mathf.Sin(kat),0,0.05f*Mathf.Cos(kat));
             transform.position +=vector;
             
         }
@@ -79,7 +87,7 @@ public class Player_motion : MonoBehaviour {
         {
             {
                 //verticalVelocity=-gravity*Time.deltaTime;
-                if (Input.GetAxis ("Jump")>0.0f)
+                if (Input.GetAxis ("Jump")>0.0f && !isInAir())
                 {
                     
                     anim.SetBool ("jumping",true);
@@ -126,6 +134,12 @@ public class Player_motion : MonoBehaviour {
             else
                 angle_to_rotete = 0;
         }
+    }
+    private bool isInAir()
+    {
+        RaycastHit hit;
+        return Physics.Raycast(transform.position, -Vector3.up, out hit, 0.2f)? false:true;
+        
     }
     
 }
