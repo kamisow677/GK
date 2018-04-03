@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18029535, g: 0.22572681, b: 0.30692968, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -1270,6 +1270,7 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+  m_TileRefreshArray: []
 --- !u!1001 &282524797
 Prefab:
   m_ObjectHideFlags: 0
@@ -1958,15 +1959,15 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 471496550}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8bd29fa7e36d4d74aa696628ca17f7a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   lookRadius: 10
-  target: {fileID: 0}
-  agent: {fileID: 0}
   distance: 0
+  shouldMove: 0
+  velocity: {x: 0, y: 0}
 --- !u!195 &471496552
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -4229,6 +4230,10 @@ Prefab:
     - target: {fileID: 4072307259821872, guid: a89a46e47a449044b8c6c21fd68eecdc, type: 2}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 180
+      objectReference: {fileID: 0}
+    - target: {fileID: 1569365290527902, guid: a89a46e47a449044b8c6c21fd68eecdc, type: 2}
+      propertyPath: m_TagString
+      value: Player
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a89a46e47a449044b8c6c21fd68eecdc, type: 2}
