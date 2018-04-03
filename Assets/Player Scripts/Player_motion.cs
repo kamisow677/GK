@@ -9,6 +9,11 @@ public class Player_motion : MonoBehaviour {
 	bool forward, back, left, right;
     Animator anim;
 	int angle_to_rotete;
+
+    public float konckBackForce;
+    public float knockBackTime;
+    private float knockBackCounter;
+
     void Awake () {
         anim = GetComponent <Animator> ();
     }
@@ -69,5 +74,14 @@ public class Player_motion : MonoBehaviour {
             else
                 angle_to_rotete = 0;
         }
+    }
+
+    public void KnockBack(Vector3 direction)
+    {
+        knockBackCounter = knockBackTime;
+       Vector3 moveDirection = new Vector3 (anim.GetFloat("x"),anim.GetFloat("y"),0f);
+        center_point.position = direction * 10;
+        anim.SetFloat("x",direction.x*10.0f);
+        anim.SetFloat("y", direction.y * 10f);
     }
 }

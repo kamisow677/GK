@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HoldCharacter : MonoBehaviour {
+public class HoldOnCapsule : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other)
     {
-        other.transform.parent = gameObject.transform;
-       
+        Vector3 hitDirection = other.transform.position - transform.position;
+        hitDirection = hitDirection.normalized;
+        FindObjectOfType<Player_motion>().KnockBack(hitDirection);
+
     }
 
     private void OnTriggerExit(Collider other)
