@@ -15,11 +15,11 @@ public class Player_motion : MonoBehaviour {
     Rigidbody rb;
     //private CharacterController controller;
 	int angle_to_rotete;
-
-    private float gravity=5*14.0f;
-    private float jumpforce=0.6f;
+    private float jumpforce=15.0f;
+    private float jumpdist=3.0f;
     private float verticalVelocity=0;
     private float distToGround;
+    
     void Awake () {
         anim = GetComponent <Animator> ();
         rb=GetComponent<Rigidbody>();
@@ -35,31 +35,41 @@ public class Player_motion : MonoBehaviour {
 		angle_to_rotete=0;
         float jT=Mathf.Abs(anim.GetFloat("JumpingTiming")-0.60f);
         Vector3 vector;
-		
-        if (anim.GetCurrentAnimatorStateInfo (0).IsTag ("jumpTag") && !anim.GetBool("inTheMiddleOfJumping"))
+         RaycastHit hit;
+
+        if (Physics.Raycast(transform.position, -Vector3.up, out hit, 0.5f))
         {
-           /* kat=transform.eulerAngles.y;
-            kat*=2.0f*3.14f/360.0f;*/
-            Debug.Log("down"+jT*jumpforce);
-            vector=new Vector3(0,jT*jumpforce,0);
+           // Debug.Log("FFALSE " + hit.distance);
+            anim.SetBool ("inAir",false);
+        }
+        else
+        {
+           // Debug.Log("TRUE " + hit.distance);
+            anim.SetBool ("inAir",true);
+        }
+        //bool pla=Physics.Raycast(transform.position, -Vector3.up, distToGround, 0.1);
+		
+        int time=(int) (anim.GetFloat("JumpingTiming")*100);
+        if (anim.GetCurrentAnimatorStateInfo (0).IsTag ("jumpTag") && !anim.GetBool("inTheMiddleOfJumping") )
+        {
+            //move down
+            vector=new Vector3(0,jT*jumpforce*Time.deltaTime,0);
             transform.position -=vector;
-             vector=new Vector3(0.1f*Mathf.Sin(kat),0,0.1f*Mathf.Cos(kat));
+            //move forward
+             vector=new Vector3(jumpdist*Mathf.Sin(kat)*Time.deltaTime,0,jumpdist*Mathf.Cos(kat)*Time.deltaTime);
             transform.position +=vector;
             
             // transform.position=center_point.position;
             
         }
-        if (anim.GetCurrentAnimatorStateInfo (0).IsTag ("jumpTag")&& anim.GetBool("inTheMiddleOfJumping"))
+        if (anim.GetCurrentAnimatorStateInfo (0).IsTag ("jumpTag") && anim.GetBool("inTheMiddleOfJumping") )
         {
-           /* kat=transform.eulerAngles.y;
-            kat*=2.0f*3.14f/360.0f;*/
-            Debug.Log("up"+jT*jumpforce);
-            vector=new Vector3(0,jT*jumpforce,0);
+            //move up
+            vector=new Vector3(0,jT*jumpforce*Time.deltaTime,0);
             transform.position +=vector;
-            vector=new Vector3(0.1f*Mathf.Sin(kat),0,0.1f*Mathf.Cos(kat));
+            //move forward
+            vector=new Vector3(jumpdist*Mathf.Sin(kat)*Time.deltaTime,0,jumpdist*Mathf.Cos(kat)*Time.deltaTime);
             transform.position +=vector;
-        //     transform.position=center_point.position;
-        //    Player_cam.LookAt (center_point);
             
         }
 		
@@ -72,50 +82,15 @@ public class Player_motion : MonoBehaviour {
         }
         else
         {
-          //  Debug.Log(controller.isGrounded);
-           // Debug.Log(verticalVelocity);
-           // if (controller.isGrounded)
             {
-                //verticalVelocity=-gravity*Time.deltaTime;
-                if (Input.GetAxis ("Jump")>0.0f)
+                if (Input.GetAxis ("Jump")>0.0f && !isInAir())
                 {
                     
                     anim.SetBool ("jumping",true);
                     kat=transform.eulerAngles.y-10;
                     kat*=2.0f*3.14f/360.0f;
-                    /*Debug.Log(transform.eulerAngles.y);
-                    Debug.Log(Mathf.Sin(kat));
-                    Debug.Log(Mathf.Cos(kat));
-*/
-
-                    /*vector=new Vector3(1.0f*Mathf.Sin(kat),0,1.0f*Mathf.Cos(kat));
-                   transform.position +=vector;*/
-
-
-                  //  verticalVelocity=jumpforce;
-                    
                 }
             }
-          //  else
-            {
-          //      verticalVelocity=-gravity*Time.deltaTime;
-            }
-            // if (JUMPING==false)
-            // {
-            //     verticalVelocity=-gravity*Time.deltaTime;
-               
-            //     JUMPING=true;
-            //     verticalVelocity=jumpforce;
-              
-               
-            // }
-            // else
-            // {
-            //         verticalVelocity=-gravity*Time.deltaTime;
-            // }
-//            Vector3 vector=new Vector3(0,verticalVelocity,0);
-            //controller.Move(vector*Time.deltaTime);
-           //  transform.position +=vector;
 
             anim.SetFloat ("movement",Mathf.Max( Mathf.Abs(Input.GetAxis ("Vertical")),  Mathf.Abs(Input.GetAxis ("Horizontal"))  ));
             if (anim.GetCurrentAnimatorStateInfo (0).IsTag ("walking"))
@@ -152,6 +127,12 @@ public class Player_motion : MonoBehaviour {
             else
                 angle_to_rotete = 0;
         }
+    }
+    private bool isInAir()
+    {
+        RaycastHit hit;
+        return Physics.Raycast(transform.position, -Vector3.up, out hit, 0.3f)? false:true;
+        
     }
     
 }
