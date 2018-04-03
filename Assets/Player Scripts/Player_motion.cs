@@ -87,7 +87,7 @@ public class Player_motion : MonoBehaviour {
                 {
                     
                     anim.SetBool ("jumping",true);
-                    kat=transform.eulerAngles.y-10;
+                    kat=transform.eulerAngles.y-30;
                     kat*=2.0f*3.14f/360.0f;
                 }
             }
