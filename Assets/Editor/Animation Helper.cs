@@ -9,6 +9,7 @@ public class AnimationHelper : EditorWindow
 	 public AnimationClip walkAnim; 
 	 public AnimationClip runAnim; 
 	 public AnimationClip jumpInRunAnim; 
+	 public AnimationClip jumpStaticAnim; 
 	 public AnimationClip equipWeapAnim; 
 	 public AnimationClip idleWeapAnim; 
 	 public AnimationClip hideWeapAnim; 
@@ -18,7 +19,7 @@ public class AnimationHelper : EditorWindow
 	 public AnimationClip walkRightWeapAnim; 
 	 public AnimationClip walkLeftWeapAnim; 
 
-	  public AnimationClip inAirAnim;
+	 public AnimationClip inAirAnim;
 
 	 [MenuItem ("Window/Animator Helper")] 
 	 static void OpenWindow () 
@@ -32,6 +33,7 @@ public class AnimationHelper : EditorWindow
 		walkAnim = EditorGUILayout.ObjectField("Walk", walkAnim, typeof(AnimationClip), false) as AnimationClip; 
 		runAnim = EditorGUILayout.ObjectField("Run", runAnim, typeof(AnimationClip), false) as AnimationClip; 
 		jumpInRunAnim = EditorGUILayout.ObjectField("Jump In Run", jumpInRunAnim, typeof(AnimationClip), false) as AnimationClip; 
+		jumpStaticAnim = EditorGUILayout.ObjectField("jump Static Anim", jumpStaticAnim, typeof(AnimationClip), false) as AnimationClip; 
 		equipWeapAnim = EditorGUILayout.ObjectField("Equip weapon", equipWeapAnim, typeof(AnimationClip), false) as AnimationClip; 
 		idleWeapAnim = EditorGUILayout.ObjectField("idle weapon", idleWeapAnim, typeof(AnimationClip), false) as AnimationClip; 
 		hideWeapAnim = EditorGUILayout.ObjectField("Hide weapon", hideWeapAnim, typeof(AnimationClip), false) as AnimationClip; 
@@ -77,6 +79,9 @@ public class AnimationHelper : EditorWindow
 		AnimatorState jumpInRunState = controller.layers[0].stateMachine.AddState("Jump In Run");
 		jumpInRunState.motion = jumpInRunAnim; 
 		jumpInRunState.tag="jumpTag";
+		AnimatorState jumpStaticState = controller.layers[0].stateMachine.AddState("jump Static Anim");
+		jumpStaticState.motion = jumpStaticAnim; 
+		jumpStaticState.tag="jumpStaticTag";
 
 		AnimatorState idleWeapState = controller.layers[0].stateMachine.AddState("Idle Weapon");
 		idleWeapState.motion = idleWeapAnim; 
@@ -115,6 +120,14 @@ public class AnimationHelper : EditorWindow
 		AnimatorStateTransition leaveJump = jumpInRunState.AddTransition(moveState); 
 		LeaveMove.AddCondition(AnimatorConditionMode.If,1,"jumping"); 
 		leaveJump.AddCondition(AnimatorConditionMode.If,1,"endjumping"); 
+
+		//Transitions
+		//Transition idleState-jumpStaticState-idleState
+		AnimatorStateTransition LeaveIdleToJump = idleState.AddTransition(jumpStaticState); 
+		AnimatorStateTransition leaveJumptoIdle = jumpStaticState.AddTransition(idleState); 
+		LeaveIdleToJump.AddCondition(AnimatorConditionMode.If,1,"jumping"); 
+		leaveJumptoIdle.AddCondition(AnimatorConditionMode.If,1,"endjumping"); 
+
 
 
 		//Transitions
