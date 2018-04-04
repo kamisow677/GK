@@ -15,7 +15,7 @@ public class Player_motion : MonoBehaviour {
     Rigidbody rb;
     //private CharacterController controller;
 	int angle_to_rotete;
-    private float jumpforce=15.0f;
+    private float jumpforce=25.0f;
     private float jumpdist=3.0f;
     private float verticalVelocity=0;
     private float distToGround;
@@ -50,26 +50,42 @@ public class Player_motion : MonoBehaviour {
         //bool pla=Physics.Raycast(transform.position, -Vector3.up, distToGround, 0.1);
 		
         int time=(int) (anim.GetFloat("JumpingTiming")*100);
-        if (anim.GetCurrentAnimatorStateInfo (0).IsTag ("jumpTag") && !anim.GetBool("inTheMiddleOfJumping") )
+        if ((anim.GetCurrentAnimatorStateInfo (0).IsTag ("jumpTag") || anim.GetCurrentAnimatorStateInfo (0).IsTag ("jumpStaticTag"))
+            && !anim.GetBool("inTheMiddleOfJumping") )
         {
             //move down
             vector=new Vector3(0,jT*jumpforce*Time.deltaTime,0);
             transform.position -=vector;
             //move forward
-             vector=new Vector3(jumpdist*Mathf.Sin(kat)*Time.deltaTime,0,jumpdist*Mathf.Cos(kat)*Time.deltaTime);
+             vector=new Vector3(jumpdist*Mathf.Sin(kat)*Time.deltaTime,0,(jumpdist)*Mathf.Cos(kat)*Time.deltaTime);
             transform.position +=vector;
+            //move forward
+            if (anim.GetCurrentAnimatorStateInfo (0).IsTag ("jumpStaticTag"))
+            {
+                Debug.Log("wszedlem");
+                vector=new Vector3(0,20*Time.deltaTime,0);
+                transform.eulerAngles +=vector;
+            }
             
             // transform.position=center_point.position;
             
         }
-        if (anim.GetCurrentAnimatorStateInfo (0).IsTag ("jumpTag") && anim.GetBool("inTheMiddleOfJumping") )
+        if ((anim.GetCurrentAnimatorStateInfo (0).IsTag ("jumpTag") || anim.GetCurrentAnimatorStateInfo (0).IsTag ("jumpStaticTag"))
+           && anim.GetBool("inTheMiddleOfJumping") )
         {
             //move up
             vector=new Vector3(0,jT*jumpforce*Time.deltaTime,0);
             transform.position +=vector;
             //move forward
-            vector=new Vector3(jumpdist*Mathf.Sin(kat)*Time.deltaTime,0,jumpdist*Mathf.Cos(kat)*Time.deltaTime);
+            vector=new Vector3(jumpdist*Mathf.Sin(kat)*Time.deltaTime,0,(jumpdist)*Mathf.Cos(kat)*Time.deltaTime);
             transform.position +=vector;
+            //move forward
+            if (anim.GetCurrentAnimatorStateInfo (0).IsTag ("jumpStaticTag"))
+            {
+                Debug.Log("wszedlem");
+                vector=new Vector3(0,20*Time.deltaTime,0);
+                transform.eulerAngles +=vector;
+            }
             
         }
 		
@@ -87,7 +103,10 @@ public class Player_motion : MonoBehaviour {
                 {
                     
                     anim.SetBool ("jumping",true);
-                    kat=transform.eulerAngles.y-30;
+                    if (anim.GetCurrentAnimatorStateInfo (0).IsTag ("jumpTag"))
+                        kat=transform.eulerAngles.y-10;
+                    else
+                        kat=transform.eulerAngles.y;
                     kat*=2.0f*3.14f/360.0f;
                 }
             }
