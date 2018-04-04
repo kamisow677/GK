@@ -31,10 +31,6 @@ public class Player_weapons : MonoBehaviour {
 	}
 	public void displayWeapon() {
 		
-		/*for (int i = 0; i < weapons.Length; i++) {
-			if(weapons [i] != null)
-				weapons [i].SetActive (i == currentWeapon);
-		}*/
 		if (weapons[currentWeapon]!=null)
 			weapons[currentWeapon].SetActive(true);
 		currentWeapon++;

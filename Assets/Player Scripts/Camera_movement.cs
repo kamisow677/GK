@@ -19,7 +19,7 @@ public class Camera_movement : MonoBehaviour {
 		dest=Center_point.position+Center_point.forward*-1*distance+Vector3.up*height;
 
 		if (Physics.Linecast (Center_point.position,dest,out hit)){
-			Debug.Log("camera Colision");
+			//Debug.Log("camera Colision");
 			if (hit.collider.CompareTag("Terrain")){
 				Player_cam.position=hit.point+hit.normal*0.30f;
 			}
