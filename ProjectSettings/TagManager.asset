@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Terrain
+  - gui.HP
   layers:
   - Default
   - TransparentFX
