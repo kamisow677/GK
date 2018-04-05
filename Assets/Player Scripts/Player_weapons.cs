@@ -28,6 +28,13 @@ public class Player_weapons : MonoBehaviour {
 				hideWeapon();
 			}
         }
+		Debug.Log(Input.GetAxis ("Fire1"));
+		if (Input.GetAxis ("Fire1")>0.1)
+        {
+			if (anim.GetCurrentAnimatorStateInfo (0).IsTag ("idleWeap")||anim.GetCurrentAnimatorStateInfo (0).IsTag ("walkingWeap"))
+            anim.SetBool ("attackingWeapon",true);
+        }
+		
 	}
 	public void displayWeapon() {
 		

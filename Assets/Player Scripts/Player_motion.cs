@@ -67,7 +67,6 @@ public class Player_motion : MonoBehaviour {
                 transform.eulerAngles +=vector;
             }
             
-            // transform.position=center_point.position;
             
         }
         if ((anim.GetCurrentAnimatorStateInfo (0).IsTag ("jumpTag") || anim.GetCurrentAnimatorStateInfo (0).IsTag ("jumpStaticTag"))
