@@ -9,6 +9,9 @@ public class ItemInfo : MonoBehaviour {
     public Item item;
     private PlayerInventory playerInventory;
 
+    public Vector3 position;
+    public Vector3 rotation;
+
     public int damage;
     public int healValue;
     public int defense;
@@ -24,7 +27,7 @@ public class ItemInfo : MonoBehaviour {
         {
             case (ItemType.weapon):
             {
-                item=new Weapon(item.name,item.description,item.stackable,item.value,item.modelPath,item.weight,damage);
+                item=new Weapon(item.name,item.description,item.stackable,item.value,item.modelPath,item.weight,damage,position,rotation);
                 break;
             }
             case (ItemType.potion):

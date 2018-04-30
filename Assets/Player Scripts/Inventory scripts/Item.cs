@@ -25,9 +25,14 @@ public class Item {
 public class Weapon: Item 
 {
 	public int damage;
-	public Weapon(string name,string description,bool stackable, int value,string modelPath,int weight,int damage)
+	public Vector3 rotation;
+	public Vector3 position;
+
+	public Weapon(string name,string description,bool stackable, int value,string modelPath,int weight,int damage, Vector3 position, Vector3 rotation)
 		:base(name,description,stackable,value,modelPath,weight)
 	{
+		this.rotation=rotation;
+		this.position=position;
 		this.damage=damage;
 	}
 }

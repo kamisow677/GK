@@ -11,20 +11,28 @@ public class InventoryMenu : MonoBehaviour {
 	public IconFilter iconFilter;
 	public InventoryIcon[] icons;
     GameObject tmp;
+
+    List<ItemFrame> listItemFrame=new List<ItemFrame>();
     RectTransform item_frame_rt, tmp_rt, rect_trans;
     ItemFrame tmpIF;
-    PlayerInventory pi;
+    PlayerInventory playerInventory;
     void Awake ()
     {
-        pi = GameObject.FindGameObjectWithTag("GameManager").GetComponent<PlayerInventory>();
+        playerInventory = GameObject.FindGameObjectWithTag("GameManager").GetComponent<PlayerInventory>();
         item_frame_rt = itemFrame.GetComponent<RectTransform>();
         //rect_trans = gameObject.GetComponent<RectTransform>();
     }   
     void Start ()
     {
-		//disableIcons();
+        updateMenu();
+    }
+	
+    public void updateMenu()
+    {
+	   //disableIcons();
 		//activeIcons(0);
-        for (int i = 0; i < pi.inventory.Count; ++i)
+        listItemFrame.Clear();
+        for (int i = 0; i < playerInventory.inventory.Count; ++i)
         {
             tmp = GameObject.Instantiate(itemFrame);
             tmp.transform.SetParent(gameObject.transform);
@@ -33,21 +41,34 @@ public class InventoryMenu : MonoBehaviour {
             tmp_rt.anchoredPosition = item_frame_rt.anchoredPosition;
             tmp_rt.anchoredPosition += new Vector2(0, (item_frame_rt.rect.height + 1.5f) * -i);
             tmpIF = tmp.GetComponent<ItemFrame>();
-			Debug.Log(pi.inventory[i].name);
-			Debug.Log(pi.inventory[i].value);
-            tmpIF.name = pi.inventory[i].name;
-            tmpIF.value = pi.inventory[i].value;
+			//Debug.Log(playerInventory.inventory[i].name);
+			//Debug.Log(playerInventory.inventory[i].value);
+            tmpIF.name = playerInventory.inventory[i].name;
+            tmpIF.value = playerInventory.inventory[i].value;
+            tmpIF.item=playerInventory.inventory[i];
             tmpIF.setValues();
+            tmp.SetActive(true);
+            gameObject.SetActive(true);
+            listItemFrame.Add(tmpIF);
+            //Debug.Log("updateuje menu");
         }
         itemFrame.SetActive(false);
         //rect_trans.sizeDelta = new Vector2(0, (item_frame_rt.rect.height + 1.5f) * pi.inventory.Count);
        // rect_trans.anchoredPosition += new Vector2(0, -(item_frame_rt.rect.height + 1.5f) * pi.inventory.Count / 2);
+    
     }
 	public void disableIcons()
 	{
 		foreach (InventoryIcon ic in icons)
 		{
 			ic.changeColor(iconNotActive);
+		}
+	}
+    public void disableFrame()
+	{
+		foreach (ItemFrame frame in listItemFrame)
+		{
+			frame.changeColor(Color.white);
 		}
 	}
 	public void activeIcons(int iconNumber)

@@ -8,20 +8,39 @@ public class ItemFrame : MonoBehaviour {
 	public string name;
     public int value;
     public Text nameTxt, valueTxt;
-    GameObject WeaponEnd;
+
+    public Item item;
+  
     public void setValues ()
     {
         nameTxt.text = name;
         valueTxt.text = value.ToString();
-      
     }
-     void OnMouseDown ()
+    public void setNewWeapon()
+	{
+        if (item is Weapon)
+        {
+           
+            Player_weapons playerWeapons = GameObject.FindGameObjectWithTag("Player").GetComponent<Player_weapons>();
+            playerWeapons.setNewWeapon((Weapon) item);
+            disableFrame();
+            changeColor(Color.cyan);
+            
+        }
+	}
+    public void changeColor(Color color)
+	{
+
+
+		color.a=1;
+		Image frameImage=gameObject.GetComponent<Image>();
+        frameImage.color=color;
+	}
+    public void disableFrame()
     {
-        Debug.Log("Probuje stworzyc item");
-        WeaponEnd=GameObject.FindGameObjectWithTag("WeaponEnd");
-        Resources.Load("Items/SwordBlue");
-      //  playerInventory.inventory.Add(item);
-        
+         InventoryMenu inventoryMenu = GameObject.FindGameObjectWithTag("Items").GetComponent<InventoryMenu>();
+         inventoryMenu.disableFrame();
     }
+    
 
 }

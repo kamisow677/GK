@@ -17,6 +17,7 @@ public class PlayerInventory : MonoBehaviour {
     {
         if (Input.GetKeyDown(KeyCode.F5))
         {
+                Debug.Log("save");
                 saveInventory();
         }
     }

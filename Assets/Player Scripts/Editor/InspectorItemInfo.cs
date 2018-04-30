@@ -15,6 +15,9 @@ public class InspectorItemInfo : Editor {
 	SerializedProperty damage;
 	SerializedProperty healValue;
 	SerializedProperty defense;
+
+	SerializedProperty position;
+	SerializedProperty rotation;
 	void OnEnable()
 	{
 		itemInfo=(ItemInfo) target;
@@ -27,6 +30,8 @@ public class InspectorItemInfo : Editor {
 		damage=serializedObject.FindProperty("damage");
 		healValue=serializedObject.FindProperty("healValue");
 		defense=serializedObject.FindProperty("defense");
+		position=serializedObject.FindProperty("position");
+		rotation=serializedObject.FindProperty("rotation");
 		//itemName=serializedObject.FindProperty("item.name");
 	}
 	public override void OnInspectorGUI()
@@ -44,6 +49,8 @@ public class InspectorItemInfo : Editor {
 			case (ItemInfo.ItemType.weapon):
 			{
 				EditorGUILayout.PropertyField(damage);
+				EditorGUILayout.PropertyField(position);
+				EditorGUILayout.PropertyField(rotation);
 				break;
 			}
 			case (ItemInfo.ItemType.potion):
