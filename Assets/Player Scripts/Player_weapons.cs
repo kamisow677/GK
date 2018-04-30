@@ -14,7 +14,6 @@ public class Player_weapons : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-
 		if (Input.GetKey (KeyCode.Z))
         {
             if (anim.GetCurrentAnimatorStateInfo (0).IsTag ("idle"))

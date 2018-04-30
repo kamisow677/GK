@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Terrain
   - gui.HP
+  - GameManager
+  - inventory
+  - WeaponEnd
   layers:
   - Default
   - TransparentFX
